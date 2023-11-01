@@ -1,6 +1,7 @@
 from Elements.graph import Graph
-from Elements.node import Node
+import argparse
 
+Mexico_city_metro = Graph()
 Mexico_city_metro_structure = {
     "Linea1": {
         "Stations": [
@@ -26,8 +27,8 @@ Mexico_city_metro_structure = {
             "Pantitlan",
         ],
         "Connections": [
-            ("Observatorio", "Tacubaya", 1),
-            ("Tacubaya", "Juanacatlan", 1),
+            ("Observatorio", "Tacubaya", 1262),
+            ("Tacubaya", "Juanacatlan", 1158),
             ("Juanacatlan", "Chapultepec", 1),
             ("Chapultepec", "Sevilla", 1),
             ("Sevilla", "Insurgentes", 1),
@@ -405,7 +406,6 @@ Mexico_city_metro_structure = {
             ("Ecatepec", "Olimpica", 1),
             ("Olimpica", "Plaza_Aragón", 1),
             ("Plaza_Aragón", "Ciudad_Azteca", 1),
-            
         ],
     },
     "Linea12": {
@@ -455,6 +455,7 @@ Mexico_city_metro_structure = {
     },
 }
 
+
 def listar_estaciones():
     global Mexico_city_metro_structure
     all_stations = set()
@@ -502,15 +503,15 @@ def main():
             "Error: Una o ambas estaciones no existen en el metro o estan nombras incorrectamente."
         )
 
-if __name__ == "__main__":
-    Mexico_city_metro = Graph()
 
+if __name__ == "__main__":
+    
     for line, data in Mexico_city_metro_structure.items():
         for station in data["Stations"]:
             Mexico_city_metro.add_node(station, line)
         for connection in data["Connections"]:
             Mexico_city_metro
-            Mexico_city_metro.add_connection(connection[0], connection[1], connection[2])
-
-    print(Mexico_city_metro.dijkstra("Bondojito", "Lindavista"))
-
+            Mexico_city_metro.add_connection(
+                connection[0], connection[1], connection[2]
+            )
+    main()
