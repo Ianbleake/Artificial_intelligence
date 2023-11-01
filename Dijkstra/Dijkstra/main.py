@@ -455,6 +455,53 @@ Mexico_city_metro_structure = {
     },
 }
 
+def listar_estaciones():
+    global Mexico_city_metro_structure
+    all_stations = set()
+    for line in Mexico_city_metro_structure.keys():
+        for station in Mexico_city_metro_structure[line]["Stations"]:
+            all_stations.add(station)
+    return list(all_stations)
+
+
+def main():
+    global Mexico_city_metro
+    parser = argparse.ArgumentParser(
+        description="Selecciona dos estaciones de cualquier línea del metro."
+    )
+    parser.add_argument("-e1", "--estacion1", type=str, help="Primera estación")
+    parser.add_argument("-e2", "--estacion2", type=str, help="Segunda estación")
+    # add show lines option
+    parser.add_argument(
+        "-li", "--lines", action="store_true", help="Muestra las líneas del metro"
+    )
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
+    # add show stations option for a specific line
+    parser.add_argument(
+        "-s", "--stations", type=str, help="Muestra las estaciones de una línea"
+    )
+
+    args = parser.parse_args()
+
+    if args.lines:
+        print("Líneas del metro:")
+        for line in Mexico_city_metro_structure.keys():
+            print(line)
+        return
+    elif args.stations:
+        print(f"Estaciones de la línea {args.stations}:")
+        for station in Mexico_city_metro_structure[args.stations]["Stations"]:
+            print(station)
+        return
+
+    if args.estacion1 in listar_estaciones() and args.estacion2 in listar_estaciones():
+        print(f"El camino más optimo a seguir de {args.estacion1} a {args.estacion2} es:.")
+        print(Mexico_city_metro.dijkstra(args.estacion1, args.estacion2))
+    else:
+        print(
+            "Error: Una o ambas estaciones no existen en el metro o estan nombras incorrectamente."
+        )
+
 if __name__ == "__main__":
     Mexico_city_metro = Graph()
 
@@ -465,5 +512,5 @@ if __name__ == "__main__":
             Mexico_city_metro
             Mexico_city_metro.add_connection(connection[0], connection[1], connection[2])
 
-    print(Mexico_city_metro.dijkstra("Cuatro_Caminos", "San_cosme"))
+    print(Mexico_city_metro.dijkstra("Bondojito", "Lindavista"))
 
